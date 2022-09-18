@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import fs from 'fs/promises';
+import dayjs from 'dayjs';
 
 export const createRandomUser = () => {
     return {
@@ -60,13 +61,23 @@ export const writeJsonElementsPerChunk = async (OUTPUT_FILE_PATH: string, number
         const strinifiedResult = customStrinify(result);
         
         await fs.appendFile(OUTPUT_FILE_PATH, strinifiedResult);
+        console.log(`current row: ${(i + 1) * numberOfRow}`);
+        console.log();
     }
 };
 
 export const writeDataToFile = async (OUTPUT_FILE_PATH: string, numberOfRow: number, totalRow: number) => {
     await fs.writeFile(OUTPUT_FILE_PATH, "[");
-    
+
     await writeJsonElementsPerChunk(OUTPUT_FILE_PATH, numberOfRow, totalRow);
 
     await fs.appendFile(OUTPUT_FILE_PATH, "]");
+};
+
+export const displayTimeLapse = (startingTime: number, endingTime: number) => {
+    const startDate = dayjs(startingTime);
+    const endingDate = dayjs(endingTime);
+
+    console.log(`ending time: ${endingDate.format('YYYY-MM-DD HH:mm:ss')}`);
+    console.log(`timelapse: ${endingDate.diff(startDate, 'second', true)}`);
 };
