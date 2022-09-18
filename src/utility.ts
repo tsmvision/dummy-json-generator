@@ -50,10 +50,7 @@ export const customStrinify = (result: any[]) => {
     return data.join(",");
 };
 
-export const writeDataToFile = async (OUTPUT_FILE_PATH: string, numberOfRow: number, totalRow: number) => {
-    await fs.writeFile(OUTPUT_FILE_PATH, "");
-    await fs.appendFile(OUTPUT_FILE_PATH, "[");
-
+export const writeJsonElementsPerChunk = async (OUTPUT_FILE_PATH: string, numberOfRow: number, totalRow: number) => {
     for (let i = 0; i < Math.ceil(totalRow / numberOfRow); i++) {
         if (i !== 0) {
             await fs.appendFile(OUTPUT_FILE_PATH, ",");
@@ -64,6 +61,12 @@ export const writeDataToFile = async (OUTPUT_FILE_PATH: string, numberOfRow: num
         
         await fs.appendFile(OUTPUT_FILE_PATH, strinifiedResult);
     }
+};
+
+export const writeDataToFile = async (OUTPUT_FILE_PATH: string, numberOfRow: number, totalRow: number) => {
+    await fs.writeFile(OUTPUT_FILE_PATH, "[");
+    
+    await writeJsonElementsPerChunk(OUTPUT_FILE_PATH, numberOfRow, totalRow);
 
     await fs.appendFile(OUTPUT_FILE_PATH, "]");
 };
