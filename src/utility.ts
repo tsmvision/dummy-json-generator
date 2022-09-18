@@ -99,3 +99,11 @@ export const displayTimeLapse = (startingTime: number, endingTime: number) => {
   console.log(`ending time: ${endingDate.format("YYYY-MM-DD HH:mm:ss")}`);
   console.log(`timelapse: ${endingDate.diff(startDate, "second", true)}`);
 };
+
+export const getProjectPath = () => {
+  return process.cwd();
+};
+
+export const getOutputFilePathByFileName = (fileName: string) => {
+  return path.join(getProjectPath(), "out", fileName);
+};

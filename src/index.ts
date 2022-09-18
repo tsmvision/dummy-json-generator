@@ -2,13 +2,13 @@ import {
   removeFileIfExists,
   writeDataToFile,
   displayTimeLapse,
+  getOutputFilePathByFileName
 } from "./utility";
-import path from "path";
 
-const OUTPUT_FILE_PATH = path.join(__dirname, "out/output.json");
+const OUTPUT_FILE_PATH = getOutputFilePathByFileName("output.json");
 
 const numberOfRow = 1000;
-const totalRow = 100000000;
+const totalRow = 10000;
 
 const execute = async () => {
   let startingTime = Date.now();
