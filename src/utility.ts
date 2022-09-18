@@ -22,9 +22,22 @@ export const removeFileIfExists = async (filePath: string) => {
     }
 };
 
-export const generateResultByNumber = (numberOfRow: number) => {
+export const getCurrentNumberOfRow = (totalRow: number, numberOfRow: number, currentIterationNumber: number) => {
+
+    const lastIterationNumber = Math.ceil(totalRow / numberOfRow);
+
+    if (currentIterationNumber === lastIterationNumber - 1) {
+        return totalRow - numberOfRow * currentIterationNumber;
+    }
+
+    return numberOfRow;
+}
+
+export const generateResultByNumber = (totalRow: number, numberOfRow: number, currentIterationNumber: number) => {
+
+    const numRow = getCurrentNumberOfRow(totalRow, numberOfRow, currentIterationNumber);
     const result: any[] = [];
-    for (let i = 0; i < numberOfRow; i++) {
+    for (let i = 0; i < numRow; i++) {
       result.push(createRandomUser());
     }
     
@@ -41,13 +54,12 @@ export const writeDataToFile = async (OUTPUT_FILE_PATH: string, numberOfRow: num
     await fs.writeFile(OUTPUT_FILE_PATH, "");
     await fs.appendFile(OUTPUT_FILE_PATH, "[");
 
-    for (let i = 0; i < Math.floor(totalRow / numberOfRow); i++) {
-
+    for (let i = 0; i < Math.ceil(totalRow / numberOfRow); i++) {
         if (i !== 0) {
             await fs.appendFile(OUTPUT_FILE_PATH, ",");
         }
 
-        const result = generateResultByNumber(numberOfRow);
+        const result = generateResultByNumber(totalRow, numberOfRow, i);
         const strinifiedResult = customStrinify(result);
         
         await fs.appendFile(OUTPUT_FILE_PATH, strinifiedResult);
